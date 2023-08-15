@@ -2,7 +2,6 @@ package com.example.example.service.servicesImpl;
 
 import com.example.example.dtos.EmployeeDto;
 import com.example.example.exceptions.RequestException;
-import com.example.example.mapper.DepartmentMapper;
 import com.example.example.mapper.EmployeeMapper;
 import com.example.example.model.entities.Employee;
 import com.example.example.repository.EmployeeRepository;
@@ -19,8 +18,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private EmployeeMapper mapper;
-    @Autowired
-    private DepartmentMapper departmentMapper;
 
     @Override
     public EmployeeDto addEmployee(EmployeeDto employeeDto) {
@@ -36,8 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto getEmployeeById(Integer id){
         Optional<Employee> employee = this.employeeRepository.findById(id);
         if(employee.isPresent()){
-            EmployeeDto employeeDto = this.mapper.employeeToEmployeeDto(employee.get());
-            return employeeDto;
+            return this.mapper.employeeToEmployeeDto(employee.get());
         }else {
             throw new RequestException("Employee is Not Found");
         }
@@ -47,12 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto updateEmployee(EmployeeDto employeeDto, Integer id){
         Optional<Employee> employee = this.employeeRepository.findById(id);
         if(employee.isPresent()){
-            Employee existingEmployee = employee.get();
-            existingEmployee.setName(employeeDto.getName());
-            existingEmployee.setAge(employeeDto.getAge());
-            existingEmployee.setDepartment(this.departmentMapper.departmentDtoToDepartment(employeeDto.getDepartment()));
-            existingEmployee.setRole(employeeDto.getRole());
-
+            Employee existingEmployee = this.mapper.updateEmployeeFromEmplyeeDto(employeeDto, employee.get());
             return this.mapper.employeeToEmployeeDto(this.employeeRepository.save(existingEmployee));
         }else {
             throw new RequestException("Employee is Not Found");
@@ -60,8 +51,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Boolean deleteEmployee(Integer id)  {
+    public EmployeeDto deleteEmployee(Integer id)  {
+        EmployeeDto employeeDto = this.getEmployeeById(id);
         this.employeeRepository.deleteById(id);
-        return true;
+        return employeeDto;
     }
 }

@@ -1,8 +1,6 @@
 package com.example.example.web.controller;
 
-import com.example.example.dtos.DepartmentDto;
 import com.example.example.dtos.EmployeeDto;
-import com.example.example.model.constant.Role;
 import com.example.example.service.EmployeeService;
 import com.example.example.web.response.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +49,8 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseModel<Boolean>> deleteEmployee(@RequestBody Integer id) {
-        ResponseModel<Boolean> responseModel = ResponseModel.<Boolean>builder()
+    public ResponseEntity<ResponseModel<EmployeeDto>> deleteEmployee(@PathVariable("id") Integer id) {
+        ResponseModel<EmployeeDto> responseModel = ResponseModel.<EmployeeDto>builder()
                 .data(this.employeeService.deleteEmployee(id)).statusCode(HttpStatus.OK.value()).build();
         return new ResponseEntity(responseModel, HttpStatus.OK);
     }

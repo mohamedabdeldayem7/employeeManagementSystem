@@ -2,9 +2,6 @@ package com.example.example.dtos;
 
 import lombok.*;
 
-import javax.persistence.OneToMany;
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter

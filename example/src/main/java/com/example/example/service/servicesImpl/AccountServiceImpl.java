@@ -34,10 +34,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDto getAccountByID(Integer id){
         Optional<Account> account = this.accountRepository.findById(id);
-
         if(account.isPresent()){
-            AccountDto accountDto = this.mapper.accountToAccountDto(account.get());
-            return accountDto;
+            return this.mapper.accountToAccountDto(account.get());
         }else {
             throw new RequestException("Account is Not Found");
         }
@@ -56,8 +54,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Boolean deleteAccount(Integer id)  {
+    public AccountDto deleteAccount(Integer id)  {
+        AccountDto accountDto = this.getAccountByID(id);
         this.accountRepository.deleteById(id);
-        return  true;
+        return  accountDto;
     }
 }

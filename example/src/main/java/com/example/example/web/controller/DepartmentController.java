@@ -33,9 +33,9 @@ public class DepartmentController {
                 .statusCode(HttpStatus.OK.value()).build();
         return new ResponseEntity(responseModel, HttpStatus.OK);
     }
-    @GetMapping("/{departmantName}")
-    ResponseEntity<ResponseModel<DepartmentDto>> getDepartmentByDeptNumber(@PathVariable("departmantName") String departmantName){
-        DepartmentDto departmentDto = this.departmentService.getDepartmentByDeptName(departmantName);
+    @GetMapping("/{departmentName}")
+    ResponseEntity<ResponseModel<DepartmentDto>> getDepartmentByDeptNumber(@PathVariable("departmentName") String departmentName){
+        DepartmentDto departmentDto = this.departmentService.getDepartmentByDeptName(departmentName);
         ResponseModel<DepartmentDto> responseModel = ResponseModel.<DepartmentDto>builder().data(departmentDto)
                 .statusCode(HttpStatus.OK.value()).build();
         return new ResponseEntity(responseModel, HttpStatus.OK);
@@ -43,9 +43,9 @@ public class DepartmentController {
 
 
     @DeleteMapping("/{name}")
-    ResponseEntity<ResponseModel<Boolean>> deleteDepartment(@PathVariable("name") String departmantName)  {
-        ResponseModel<Boolean> responseModel = ResponseModel.<Boolean>builder()
-                .data(this.departmentService.deleteDepartment(departmantName)).statusCode(HttpStatus.OK.value()).build();
+    ResponseEntity<ResponseModel<DepartmentDto>> deleteDepartment(@PathVariable("name") String departmentName)  {
+        ResponseModel<DepartmentDto> responseModel = ResponseModel.<DepartmentDto>builder()
+                .data(this.departmentService.deleteDepartment(departmentName)).statusCode(HttpStatus.OK.value()).build();
         return new ResponseEntity(responseModel, HttpStatus.OK);
     }
 }

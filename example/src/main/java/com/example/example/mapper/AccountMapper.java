@@ -12,7 +12,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-
 @Mapper(
         componentModel = "spring"
 )
