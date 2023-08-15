@@ -51,6 +51,7 @@ public class AccountServiceImpl implements AccountService {
             return this.mapper.accountToAccountDto(this.accountRepository.save(existingAccount));
         }else {
             throw new RequestException("Account is Not Found");
+
         }
     }
 
