@@ -9,5 +9,5 @@ public interface EmployeeService {
     List<EmployeeDto> getAllEmployee();
     EmployeeDto getEmployeeById( Integer id) ;
     EmployeeDto updateEmployee(EmployeeDto EmployeeDto, Integer id);
-    Boolean deleteEmployee(Integer id);
+    EmployeeDto deleteEmployee(Integer id);
 }

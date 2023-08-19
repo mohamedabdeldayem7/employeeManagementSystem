@@ -6,6 +6,7 @@ import com.example.example.mapper.AccountMapper;
 import com.example.example.model.entities.Account;
 import com.example.example.repository.AccountRepository;
 import com.example.example.service.AccountService;
+import com.example.example.validation.AccountValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +20,12 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository ;
     @Autowired
     private AccountMapper mapper;
+    @Autowired
+    private AccountValidation accountValidation;
 
     @Override
     public AccountDto addAccount(AccountDto accountDto) {
+        accountValidation.validateAccount(accountDto);
         Account account = this.mapper.accountDtoToAccount(accountDto);
         return this.mapper.accountToAccountDto(this.accountRepository.save(account));
     }
@@ -34,10 +38,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDto getAccountByID(Integer id){
         Optional<Account> account = this.accountRepository.findById(id);
-
         if(account.isPresent()){
-            AccountDto accountDto = this.mapper.accountToAccountDto(account.get());
-            return accountDto;
+            return this.mapper.accountToAccountDto(account.get());
         }else {
             throw new RequestException("Account is Not Found");
         }
@@ -45,6 +47,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDto updateAccount(AccountDto accountDto, Integer id) {
+        accountValidation.validateAccount(accountDto);
         Optional<Account> account = this.accountRepository.findById(id);
         if(account.isPresent()){
             Account existingAccount = this.mapper.updateAccountFromAccountDto(accountDto, account.get());
@@ -56,8 +59,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Boolean deleteAccount(Integer id)  {
+    public AccountDto deleteAccount(Integer id)  {
+        AccountDto accountDto = this.getAccountByID(id);
         this.accountRepository.deleteById(id);
-        return  true;
+        return  accountDto;
     }
 }

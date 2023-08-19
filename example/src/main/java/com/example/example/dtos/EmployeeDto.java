@@ -1,7 +1,5 @@
 package com.example.example.dtos;
 
-import com.example.example.model.constant.Role;
-import com.example.example.model.entities.Department;
 import lombok.*;
 
 @Builder
@@ -10,8 +8,6 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode
-
-@ToString
 public class EmployeeDto {
     private Integer id;
     private String name;

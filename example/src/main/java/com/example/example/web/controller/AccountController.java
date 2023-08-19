@@ -46,9 +46,9 @@ public class AccountController  {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseModel<Boolean>> deleteAccount(@PathVariable("id") Integer id) {
-        Boolean deleteAccount = this.accountService.deleteAccount(id);
-        ResponseModel<Boolean> model = ResponseModel.<Boolean>builder().data(deleteAccount).statusCode(HttpStatus.OK.value()).build();
+    public ResponseEntity<ResponseModel<AccountDto>> deleteAccount(@PathVariable("id") Integer id) {
+        AccountDto deleteAccount = this.accountService.deleteAccount(id);
+        ResponseModel<AccountDto> model = ResponseModel.<AccountDto>builder().data(deleteAccount).statusCode(HttpStatus.OK.value()).build();
         return new ResponseEntity(model, HttpStatus.OK);
     }
 }

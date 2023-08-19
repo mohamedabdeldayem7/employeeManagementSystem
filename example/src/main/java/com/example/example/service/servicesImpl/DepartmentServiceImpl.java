@@ -22,7 +22,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDto addDepartment(DepartmentDto departmentDto) {
-        return this.mapper.departmentToDepartmentDtoDto(this.departmentRepository.save(this.mapper.departmentDtoToDepartment(departmentDto)));
+        return this.mapper.departmentToDepartmentDto(this.departmentRepository.save(this.mapper.departmentDtoToDepartment(departmentDto)));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentDto getDepartmentByDeptName(String deptName) {
         Optional<Department> department = this.departmentRepository.findDepartmentByDepartmentName(deptName);
         if(department.isPresent()){
-            DepartmentDto departmentDto = this.mapper.departmentToDepartmentDtoDto(department.get());
+            DepartmentDto departmentDto = this.mapper.departmentToDepartmentDto(department.get());
             return departmentDto;
         }else{
             throw new RequestException("Department is Not Found");
@@ -42,14 +42,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Boolean updateDepartment(DepartmentDto departmentDto, Integer deptNumber) {
-        return null;
-    }
-
-    @Override
-    public Boolean deleteDepartment(String deptName) {
+    public DepartmentDto deleteDepartment(String deptName) {
         DepartmentDto departmentDto = this.getDepartmentByDeptName(deptName);
         this.departmentRepository.deleteById(departmentDto.getDepartmentNumber());
-        return  true;
+        return  departmentDto;
     }
 }
