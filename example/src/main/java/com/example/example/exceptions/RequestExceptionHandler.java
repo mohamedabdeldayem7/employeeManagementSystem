@@ -8,11 +8,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class RequestExceptionHandler {
-    @ExceptionHandler(value = {RequestException.class})
+    @ExceptionHandler(value = {NotFoundExecption.class})
     public ResponseEntity<Object> handleRequestException(RequestException e){
 
         ResponseModel model = ResponseModel.builder().message(e.getMessage())
                 .statusCode(HttpStatus.NOT_FOUND.value()).build();
+
+        return new ResponseEntity<>(model, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {NotValidException.class})
+    public ResponseEntity<Object> handleRequestException(NotValidException e){
+
+        ResponseModel model = ResponseModel.builder().message(e.getMessage())
+                .statusCode(HttpStatus.NOT_ACCEPTABLE.value()).build();
 
         return new ResponseEntity<>(model, HttpStatus.NOT_FOUND);
     }

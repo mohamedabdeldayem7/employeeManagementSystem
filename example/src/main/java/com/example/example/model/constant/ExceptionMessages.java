@@ -5,6 +5,7 @@ public enum ExceptionMessages {
     DEPARTMENT_NOT_FOUND("Department is nor found"),
     EMPLOYEE_NOT_FOUND("Employee is not found"),
     EMAIL_NOT_ALLOWED("Email address not allowed"),
+    NAME_NOT_ALLOWED("Name not allowed"),
     BALANCE_NOT_ALLOWED("Amount not allowed"),
     AGE_NOT_ALLOWED("Age not allowed"),
     ROLE_NOT_ALLOWED("Role not allowed");
