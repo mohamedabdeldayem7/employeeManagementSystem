@@ -67,7 +67,9 @@ public class AccountServiceImpl implements AccountService {
         Optional<Account> account = this.accountRepository.findById(id);
         if(account.isPresent()){
             Account existingAccount = this.mapper.updateAccountFromAccountDto(accountDto, account.get());
-            return this.mapper.accountToAccountDto(this.accountRepository.save(existingAccount));
+            Account savedAccount = this.accountRepository.save(existingAccount);
+            AccountDto finalAccount = this.mapper.accountToAccountDto(savedAccount);
+            return finalAccount;
         }else {
             throw new RequestException("Account is Not Found");
 
