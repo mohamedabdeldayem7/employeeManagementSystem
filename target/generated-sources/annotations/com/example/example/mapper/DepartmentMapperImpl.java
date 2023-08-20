@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-15T13:38:24+0300",
+    date = "2023-08-19T21:13:27+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.7 (Oracle Corporation)"
 )
 @Component
 public class DepartmentMapperImpl implements DepartmentMapper {
 
     @Override
-    public DepartmentDto departmentToDepartmentDtoDto(Department department) {
+    public DepartmentDto departmentToDepartmentDto(Department department) {
         if ( department == null ) {
             return null;
         }
@@ -65,7 +65,7 @@ public class DepartmentMapperImpl implements DepartmentMapper {
 
         List<DepartmentDto> list = new ArrayList<DepartmentDto>( departmentList.size() );
         for ( Department department : departmentList ) {
-            list.add( departmentToDepartmentDtoDto( department ) );
+            list.add( departmentToDepartmentDto( department ) );
         }
 
         return list;

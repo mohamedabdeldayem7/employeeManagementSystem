@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-15T13:29:16+0300",
+    date = "2023-08-19T21:13:27+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.7 (Oracle Corporation)"
 )
 @Component
@@ -29,8 +29,9 @@ public class EmployeeMapperImpl implements EmployeeMapper {
 
         employeeDto.id( employee.getId() );
         employeeDto.name( employee.getName() );
+        employeeDto.email( employee.getEmail() );
         employeeDto.age( employee.getAge() );
-        employeeDto.department( departmentMapper.departmentToDepartmentDtoDto( employee.getDepartment() ) );
+        employeeDto.department( departmentMapper.departmentToDepartmentDto( employee.getDepartment() ) );
         employeeDto.role( employee.getRole() );
 
         return employeeDto.build();
@@ -74,6 +75,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
 
         employee.id( employeeDto.getId() );
         employee.name( employeeDto.getName() );
+        employee.email( employeeDto.getEmail() );
         employee.age( employeeDto.getAge() );
         employee.department( departmentMapper.departmentDtoToDepartment( employeeDto.getDepartment() ) );
         employee.role( employeeDto.getRole() );
@@ -92,6 +94,9 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         }
         if ( employeeDto.getName() != null ) {
             employee.setName( employeeDto.getName() );
+        }
+        if ( employeeDto.getEmail() != null ) {
+            employee.setEmail( employeeDto.getEmail() );
         }
         if ( employeeDto.getAge() != null ) {
             employee.setAge( employeeDto.getAge() );

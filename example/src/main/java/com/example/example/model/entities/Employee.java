@@ -32,5 +32,6 @@ public class Employee {
     private Department department;
 
     @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

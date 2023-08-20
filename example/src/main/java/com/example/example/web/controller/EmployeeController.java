@@ -6,10 +6,13 @@ import com.example.example.web.response.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -17,7 +20,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping("/")
-    ResponseEntity<ResponseModel<EmployeeDto>> addEmployee(@RequestBody EmployeeDto employeeDto){
+    ResponseEntity<ResponseModel<EmployeeDto>> addEmployee(@RequestBody @Valid EmployeeDto employeeDto){
         EmployeeDto employeeDto1 = this.employeeService.addEmployee(employeeDto);
         ResponseModel<EmployeeDto> responseModel = ResponseModel.<EmployeeDto>builder().data(employeeDto1)
                 .statusCode(HttpStatus.OK.value()).build();
@@ -41,7 +44,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseModel<EmployeeDto>> updateEmployee(@RequestBody EmployeeDto employeeDto, @PathVariable("id") Integer id) {
+    public ResponseEntity<ResponseModel<EmployeeDto>> updateEmployee(@RequestBody @Valid EmployeeDto employeeDto, @PathVariable("id") Integer id) {
         EmployeeDto employeeDto1 = this.employeeService.updateEmployee(employeeDto, id);
         ResponseModel<EmployeeDto> responseModel = ResponseModel.<EmployeeDto>builder().data(employeeDto1)
                 .statusCode(HttpStatus.OK.value()).build();

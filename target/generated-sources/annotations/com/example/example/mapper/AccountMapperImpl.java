@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-15T13:29:16+0300",
+    date = "2023-08-19T21:13:27+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.7 (Oracle Corporation)"
 )
 @Component
@@ -25,13 +25,13 @@ public class AccountMapperImpl implements AccountMapper {
             return null;
         }
 
-        AccountDto accountDto = new AccountDto();
+        AccountDto.AccountDtoBuilder accountDto = AccountDto.builder();
 
-        accountDto.setId( account.getId() );
-        accountDto.setName( account.getName() );
-        accountDto.setBalance( account.getBalance() );
+        accountDto.id( account.getId() );
+        accountDto.name( account.getName() );
+        accountDto.balance( account.getBalance() );
 
-        return accountDto;
+        return accountDto.build();
     }
 
     @Override
@@ -57,6 +57,7 @@ public class AccountMapperImpl implements AccountMapper {
 
         employee.setId( employeeDto.getId() );
         employee.setName( employeeDto.getName() );
+        employee.setEmail( employeeDto.getEmail() );
         employee.setAge( employeeDto.getAge() );
         if ( employeeDto.getDepartment() != null ) {
             if ( employee.getDepartment() == null ) {

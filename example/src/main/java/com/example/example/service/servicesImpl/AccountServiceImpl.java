@@ -10,6 +10,8 @@ import com.example.example.validation.AccountValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,19 +29,33 @@ public class AccountServiceImpl implements AccountService {
     public AccountDto addAccount(AccountDto accountDto) {
         accountValidation.validateAccount(accountDto);
         Account account = this.mapper.accountDtoToAccount(accountDto);
-        return this.mapper.accountToAccountDto(this.accountRepository.save(account));
+//        Account account = Account.builder().id(accountDto.getId())
+//                .name(accountDto.getName())
+//                .balance(accountDto.getBalance()).build();
+        Account accountRepo = this.accountRepository.save(account);
+        AccountDto mappedAccount = this.mapper.accountToAccountDto(accountRepo);
+        return mappedAccount;
     }
 
     @Override
     public List<AccountDto> getAllAccounts() {
-        return this.mapper.toAccountDtoList(this.accountRepository.findAll());
+        List<Account> accounts = this.accountRepository.findAll();
+        List<AccountDto> accountDtoList = new ArrayList<>(accounts.size());
+        Iterator var3 = accounts.iterator();
+
+        while(var3.hasNext()) {
+            Account account = (Account)var3.next();
+            accountDtoList.add(this.mapper.accountToAccountDto(account));
+        }
+        return accountDtoList;
     }
 
     @Override
     public AccountDto getAccountByID(Integer id){
         Optional<Account> account = this.accountRepository.findById(id);
         if(account.isPresent()){
-            return this.mapper.accountToAccountDto(account.get());
+            AccountDto accountDto = this.mapper.accountToAccountDto(account.get());
+            return accountDto;
         }else {
             throw new RequestException("Account is Not Found");
         }
