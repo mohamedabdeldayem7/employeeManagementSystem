@@ -7,7 +7,7 @@ import com.example.example.repository.AccountRepository;
 import com.example.example.service.servicesImpl.AccountServiceImpl;
 import com.example.example.validation.AccountValidation;
 import org.assertj.core.api.Assertions;
-import org.hibernate.sql.Update;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.*;
 
 
 //@ExtendWith(MockitoExtension.class)
@@ -39,49 +40,31 @@ public class AccountServiceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        Account account = Account.builder().id(1).name("mohamed").balance(20000.0).build();
+        account = Account.builder().id(1).name("mohamed").balance(20000.0).build();
 
-        AccountDto accountDto = AccountDto.builder()
+        accountDto = AccountDto.builder()
                 .id(account.getId())
                 .name(account.getName())
                 .balance(account.getBalance()).build();
     }
 
+    @DisplayName("JUnit test for addAccount method")
     @Test
     public void givenAccountDtoObject_whenAddAccount_thenReturnAccountDtoObject() {
-
-        Account account = Account.builder().id(1).name("mohamed").balance(20000.0).build();
-
-        AccountDto accountDto = AccountDto.builder()
-                .id(account.getId())
-                .name(account.getName())
-                .balance(account.getBalance()).build();
 
         when(accountRepository.save(account)).thenReturn(account);
         when(accountMapper.accountToAccountDto(account)).thenReturn(accountDto);
         when(accountMapper.accountDtoToAccount(accountDto)).thenReturn(account);
 
-//        Account returnedAccount = accountRepository.save(account);
-//        System.out.println(returnedAccount.getName());
-//
-//        Assertions.assertThat(returnedAccount).isNotNull();
-//        Assertions.assertThat(returnedAccount).isEqualTo(account);
-
         AccountDto returnedAccount = accountService.addAccount(accountDto);
-        System.out.println(returnedAccount);
 
         Assertions.assertThat(returnedAccount).isNotNull();
         Assertions.assertThat(returnedAccount).isEqualTo(accountDto);
     }
 
+    @DisplayName("JUnit test for getAllAccounts method")
     @Test
     public void givenAccountsList_whenGetAllAccounts_thenReturnAccountsList() {
-        Account account = Account.builder().id(1).name("mohamed").balance(20000.0).build();
-
-        AccountDto accountDto = AccountDto.builder()
-                .id(account.getId())
-                .name(account.getName())
-                .balance(account.getBalance()).build();
 
         Account account2 = Account.builder().id(2).name("hassan").balance(50000.0).build();
 
@@ -96,15 +79,16 @@ public class AccountServiceTest {
         Assertions.assertThat(accountDtoList2).hasSize(2);
     }
 
+    @DisplayName("JUnit test for getAccountById method")
     @Test
     public void givenAccountId_whenGetAccountById_thenReturnAccountDtoObject() {
 
-        Account account = Account.builder().id(1).name("mohamed").balance(20000.0).build();
-
-        AccountDto accountDto = AccountDto.builder()
-                .id(account.getId())
-                .name(account.getName())
-                .balance(account.getBalance()).build();
+//        account = Account.builder().id(1).name("mohamed").balance(20000.0).build();
+//
+//        accountDto = AccountDto.builder()
+//                .id(account.getId())
+//                .name(account.getName())
+//                .balance(account.getBalance()).build();
 
         when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
         when(accountMapper.accountToAccountDto(account)).thenReturn(accountDto);
@@ -112,26 +96,24 @@ public class AccountServiceTest {
         AccountDto returnedaccountDto = accountService.getAccountByID(account.getId());
 
         Assertions.assertThat(returnedaccountDto).isNotNull();
+        Assertions.assertThat(returnedaccountDto.getId()).isEqualTo(account.getId());
     }
 
+
+    @DisplayName("JUnit test for updateAccount method")
     @Test
     public void givenAccountObjectAndAccountId_whenUpdateAccount_thenReturnUpdatedAccount() {
-        Account account = Account.builder().id(1).name("mohamed").balance(20000.0).build();
-
-        AccountDto accountDto = AccountDto.builder()
-                .id(account.getId())
-                .name(account.getName())
-                .balance(account.getBalance()).build();
 
         AccountDto updatedAccountDto = AccountDto.builder()
                 .id(1)
                 .name("Hamza")
                 .balance(35000.0)
                 .build();
-        Account updatedAccount = Account.builder().id(1).name(updatedAccountDto.getName()).balance(updatedAccountDto.getBalance()).build();
-
-        System.out.println(account);
-        System.out.println(accountDto);
+        Account updatedAccount = Account.builder()
+                .id(1)
+                .name(updatedAccountDto.getName())
+                .balance(updatedAccountDto.getBalance())
+                .build();
 
         Integer id = account.getId();
 
@@ -148,6 +130,7 @@ public class AccountServiceTest {
 
     }
 
+    @DisplayName("JUnit test for deleteAccount method")
     @Test
     public void givenAccountId_whenDeleteAccount_thenReturnDeletedAccountDto() {
         Account account = Account.builder().id(1).name("mohamed").balance(20000.0).build();
@@ -156,8 +139,15 @@ public class AccountServiceTest {
                 .id(account.getId())
                 .name(account.getName())
                 .balance(account.getBalance()).build();
+
         this.givenAccountId_whenGetAccountById_thenReturnAccountDtoObject();
-        //given(accountRepository.deleteById(account.getId())).willRetur()
+
+        willDoNothing().given(accountRepository).deleteById(account.getId());
+
+        AccountDto deletedAccountDto = accountService.deleteAccount(accountDto.getId());
+
+        Assertions.assertThat(deletedAccountDto).isNotNull();
+        verify(accountRepository, times(1)).deleteById(account.getId());
     }
 
 }

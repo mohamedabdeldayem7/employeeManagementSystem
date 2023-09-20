@@ -11,5 +11,4 @@ public class DepartmentDto {
     private Integer departmentNumber;
     private String departmentName;
 
-
 }

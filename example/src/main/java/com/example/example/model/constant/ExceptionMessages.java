@@ -1,5 +1,8 @@
 package com.example.example.model.constant;
 
+import lombok.Getter;
+
+@Getter
 public enum ExceptionMessages {
     ACCOUNT_NOT_FOUND("Account is not found"),
     DEPARTMENT_NOT_FOUND("Department is nor found"),
